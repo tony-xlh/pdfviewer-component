@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, Event, EventEmitter } from '@stencil/core';
+import { Component, h, Prop, Event, EventEmitter, Host } from '@stencil/core';
 import Dynamsoft from "dwt";
 import { WebTwain } from "dwt/dist/types/WebTwain";
 
@@ -21,45 +21,45 @@ export class PDFViewer {
   initDWT(){
     Dynamsoft.DWT.ResourcesPath = "https://unpkg.com/dwt@18.0.0/dist";
     let DWObject = null;
-    Dynamsoft.DWT.CreateDWTObjectEx({
-        WebTwainId: 'dwtcontrol'
-      },
-      function(obj) {
-        console.log("success");
-        DWObject = obj;
-        console.log(DWObject)
-        if (this.width) {
-          if (this.container) {
-            this.container.style.width = this.width;
+    let pThis = this;
+    Dynamsoft.DWT.RegisterEvent('OnWebTwainReady', () => {
+      Dynamsoft.DWT.CreateDWTObjectEx(
+        {
+          WebTwainId: 'dwtcontrol'
+        },
+        function(obj) {
+          DWObject = obj;
+          DWObject.Viewer.bind(pThis.container);
+          DWObject.Viewer.show();
+          if (pThis.width) {
+            pThis.container.style.width = pThis.width;
+            DWObject.Viewer.width = pThis.width;
           }
-          DWObject.Viewer.width = this.width;
-        }
-        if (this.height) {
-          if (this.container) {
-            this.container.style.height = this.height;
+          if (pThis.height) {
+            pThis.container.style.height = pThis.height;
+            DWObject.Viewer.height = pThis.height;
           }
-          DWObject.Viewer.height = this.height;
+          if (pThis.webTWAINReady) {
+            pThis.webTWAINReady.emit(DWObject);
+          }
+        },
+        function(err) {
+          console.log(err);
         }
-        if (this.webTWAINReady) {
-          this.webTWAINReady.emit(DWObject);
-        }
-        DWObject.Viewer.bind(this.container);
-        DWObject.Viewer.height = 600;
-        DWObject.Viewer.width = 800;
-        DWObject.Viewer.show();
-      },
-      function(err) {
-        console.log(err);
-      }
-    );
-    console.log("init end");
+      );
+    });
+    Dynamsoft.DWT.Containers = [{
+        WebTwainId: 'dwtObject'
+    }];
+    Dynamsoft.DWT.Load();
   }
 
   render() {
     return (
       <Host>
-        <div id={this.containerID} ref={(el) => this.container = el as HTMLDivElement}></div>
-        <slot></slot>
+        <div class="container" id={this.containerID} ref={(el) => this.container = el as HTMLDivElement}>
+          <slot></slot>
+        </div>
       </Host>
     );
   }
