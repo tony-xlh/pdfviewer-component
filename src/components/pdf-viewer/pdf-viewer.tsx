@@ -44,6 +44,7 @@ export class PDFViewer {
             pThis.webTWAINReady.emit(pThis.DWObject);
           }
           pThis.DWObject.Viewer.cursor = "pointer";
+          pThis.DWObject.Viewer.createThumbnailViewer().show()
           pThis.loadPDF();
         },
         function(err) {
