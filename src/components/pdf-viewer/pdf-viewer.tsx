@@ -1,6 +1,6 @@
 import { Component, Host, h, Prop, Event, EventEmitter } from '@stencil/core';
-import Dynamsoft from "web-twain-plus";
-import { WebTwain } from "web-twain-plus/dist/types/WebTwain";
+import Dynamsoft from "dwt";
+import { WebTwain } from "dwt/dist/types/WebTwain";
 
 @Component({
   tag: 'pdf-viewer',
@@ -19,7 +19,7 @@ export class PDFViewer {
   }
 
   initDWT(){
-    Dynamsoft.DWT.ResourcesPath = "https://unpkg.com/web-twain-plus@18.0.1/dist";
+    Dynamsoft.DWT.ResourcesPath = "https://unpkg.com/dwt@18.0.0/dist";
     let DWObject = null;
     Dynamsoft.DWT.CreateDWTObjectEx({
         WebTwainId: 'dwtcontrol'

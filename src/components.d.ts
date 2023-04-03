@@ -5,8 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { WebTwain } from "web-twain-plus/dist/types/WebTwain";
-export { WebTwain } from "web-twain-plus/dist/types/WebTwain";
+import { WebTwain } from "dwt/dist/types/WebTwain";
+export { WebTwain } from "dwt/dist/types/WebTwain";
 export namespace Components {
     interface PdfViewer {
         "height"?: string;
