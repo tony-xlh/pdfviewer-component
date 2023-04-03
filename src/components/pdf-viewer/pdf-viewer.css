@@ -13,11 +13,12 @@
   display: flex;
   align-items: center;
   height: 100%;
+  padding-right: 5px;
 }
 
 .Icon {
-  width: 28px;
-  height: 100%;
+  width: 22px;
+  height: 22px;
   cursor: pointer;
 }
 

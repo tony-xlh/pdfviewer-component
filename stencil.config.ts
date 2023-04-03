@@ -11,7 +11,7 @@ export const config: Config = {
       type: 'dist-custom-elements',
       copy: [
         {
-          src: '**/*.{svg}',
+          src: '**/*.{jpg,png,svg}',
           dest: 'dist/components/assets',
           warn: true,
         }

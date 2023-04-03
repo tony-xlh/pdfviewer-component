@@ -1,4 +1,4 @@
-import { Component, h, Prop, getAssetPath, Event, EventEmitter, Host, Method } from '@stencil/core';
+import { Component, h, Prop, getAssetPath, Event, EventEmitter, Host, Method, State } from '@stencil/core';
 import Dynamsoft from "dwt";
 import { WebTwain } from "dwt/dist/types/WebTwain";
 import { ThumbnailViewer } from 'dwt/dist/types/WebTwain.Viewer';
@@ -16,7 +16,8 @@ export class PDFViewer {
   thumbnailViewer:ThumbnailViewer;
   thumbnailShown:boolean = true;
   DWObject:WebTwain;
-  percent: number = 100;
+  @State() percent: number = 100;
+  @State() showFitWindow:boolean = true;
   @Prop() width?: string;
   @Prop() height?: string;
   @Prop() url?: string;
@@ -94,8 +95,21 @@ export class PDFViewer {
     this.DWObject.Viewer.zoom = zoom;
   }
 
+  quicksize(){
+    if (this.showFitWindow) {
+      this.DWObject.Viewer.fitWindow("width");
+      this.percent = this.DWObject.Viewer.zoom*100;
+    }else{
+      this.DWObject.Viewer.zoom = 1.0;
+      this.percent = 100;
+    }
+    this.showFitWindow = !this.showFitWindow;
+  }
+
   render() {
     const sideBar = getAssetPath(`./assets/sidebar.svg`);
+    const fitWindow = getAssetPath(`./assets/FitWindow.png`);
+    const originalSize = getAssetPath(`./assets/Orig_size.png`);
     return (
       <Host>
         <div class="toolbar" ref={(el) => this.toolbar = el as HTMLDivElement}>
@@ -107,6 +121,12 @@ export class PDFViewer {
               value={this.percent}
               onChange={(e) => this.updateZoom(e)}
             /><label htmlFor="percent-input">%</label>
+          </div>
+          <div class="quicksize toolbar-item">
+          {this.showFitWindow
+            ? <img class="Icon" src={fitWindow} onClick={()=>this.quicksize()}/>
+            : <img class="Icon" src={originalSize} onClick={()=>this.quicksize()}/>
+          }
           </div>
         </div>
         <div id={this.containerID} ref={(el) => this.container = el as HTMLDivElement}>
