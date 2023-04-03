@@ -22,7 +22,6 @@ export class PDFViewer {
 
   initDWT(){
     Dynamsoft.DWT.ResourcesPath = "https://unpkg.com/dwt@18.0.0/dist";
-    let DWObject = null;
     let pThis = this;
     Dynamsoft.DWT.RegisterEvent('OnWebTwainReady', () => {
       Dynamsoft.DWT.CreateDWTObjectEx(
@@ -44,6 +43,7 @@ export class PDFViewer {
           if (pThis.webTWAINReady) {
             pThis.webTWAINReady.emit(pThis.DWObject);
           }
+          pThis.DWObject.Viewer.cursor = "pointer";
           pThis.loadPDF();
         },
         function(err) {
