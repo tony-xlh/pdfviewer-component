@@ -5,9 +5,17 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { WebTwain } from "web-twain-plus/dist/types/WebTwain";
+export { WebTwain } from "web-twain-plus/dist/types/WebTwain";
 export namespace Components {
     interface PdfViewer {
+        "height"?: string;
+        "width"?: string;
     }
+}
+export interface PdfViewerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLPdfViewerElement;
 }
 declare global {
     interface HTMLPdfViewerElement extends Components.PdfViewer, HTMLStencilElement {
@@ -22,6 +30,9 @@ declare global {
 }
 declare namespace LocalJSX {
     interface PdfViewer {
+        "height"?: string;
+        "onWebTWAINReady"?: (event: PdfViewerCustomEvent<WebTwain>) => void;
+        "width"?: string;
     }
     interface IntrinsicElements {
         "pdf-viewer": PdfViewer;
