@@ -16,6 +16,7 @@ export class PDFViewer {
   thumbnailViewer:ThumbnailViewer;
   thumbnailShown:boolean = true;
   DWObject:WebTwain;
+  percent: number = 100;
   @Prop() width?: string;
   @Prop() height?: string;
   @Prop() url?: string;
@@ -86,12 +87,27 @@ export class PDFViewer {
     this.thumbnailShown = !this.thumbnailShown;
   }
 
+  updateZoom(e:any){
+    this.percent = e.target.value;
+    const zoom = this.percent/100;
+    console.log(zoom);
+    this.DWObject.Viewer.zoom = zoom;
+  }
+
   render() {
     const sideBar = getAssetPath(`./assets/sidebar.svg`);
     return (
       <Host>
         <div class="toolbar" ref={(el) => this.toolbar = el as HTMLDivElement}>
-          <img class="Icon" src={sideBar} onClick={()=>this.toggleThumbnailViewer()}/>
+          <div class="toolbar-item">
+            <img class="Icon" src={sideBar} onClick={()=>this.toggleThumbnailViewer()}/>
+          </div>
+          <div class="zoom toolbar-item">
+            <input type="number" id="percent-input" 
+              value={this.percent}
+              onChange={(e) => this.updateZoom(e)}
+            /><label htmlFor="percent-input">%</label>
+          </div>
         </div>
         <div id={this.containerID} ref={(el) => this.container = el as HTMLDivElement}>
           <slot></slot>

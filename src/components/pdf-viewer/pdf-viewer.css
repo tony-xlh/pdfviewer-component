@@ -5,10 +5,22 @@
 .toolbar {
   height: 30px;
   border: 1px solid rgb(204, 204, 204);
+  display: flex;
+  align-items: center;
+}
+
+.toolbar-item {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .Icon {
   width: 28px;
   height: 100%;
   cursor: pointer;
+}
+
+#percent-input {
+  width: 4em;
 }
