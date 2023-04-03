@@ -1,26 +1,31 @@
-import { Component, h, Prop, Event, EventEmitter, Host } from '@stencil/core';
+import { Component, h, Prop, getAssetPath, Event, EventEmitter, Host, Method } from '@stencil/core';
 import Dynamsoft from "dwt";
 import { WebTwain } from "dwt/dist/types/WebTwain";
+import { ThumbnailViewer } from 'dwt/dist/types/WebTwain.Viewer';
 
 @Component({
   tag: 'pdf-viewer',
   styleUrl: 'pdf-viewer.css',
   shadow: true,
+  assetsDirs: ['assets']
 })
 export class PDFViewer {
   containerID:string = "dwtcontrolContainer";
   container:HTMLDivElement;
+  toolbar:HTMLDivElement;
+  thumbnailViewer:ThumbnailViewer;
+  thumbnailShown:boolean = true;
   DWObject:WebTwain;
   @Prop() width?: string;
   @Prop() height?: string;
   @Prop() url?: string;
   @Event() webTWAINReady?: EventEmitter<WebTwain>;
-  componentDidLoad(){
+  componentDidLoad() {
     console.log("load");
     this.initDWT();
   }
 
-  initDWT(){
+  initDWT() {
     Dynamsoft.DWT.ResourcesPath = "https://unpkg.com/dwt@18.0.0/dist";
     let pThis = this;
     Dynamsoft.DWT.RegisterEvent('OnWebTwainReady', () => {
@@ -44,7 +49,8 @@ export class PDFViewer {
             pThis.webTWAINReady.emit(pThis.DWObject);
           }
           pThis.DWObject.Viewer.cursor = "pointer";
-          pThis.DWObject.Viewer.createThumbnailViewer().show()
+          pThis.thumbnailViewer = pThis.DWObject.Viewer.createThumbnailViewer();
+          pThis.thumbnailViewer.show();
           pThis.loadPDF();
         },
         function(err) {
@@ -58,19 +64,36 @@ export class PDFViewer {
     Dynamsoft.DWT.Load();
   }
 
-  async loadPDF(){
+  async loadPDF() {
     if (this.url) {
       let response = await fetch(this.url);
       let blob = await response.blob();
       console.log(blob);
-      this.DWObject.LoadImageFromBinary(blob,function(){},function(){});
+      let pThis = this;
+      this.DWObject.LoadImageFromBinary(blob,function(){
+        pThis.DWObject.SelectImages([0]);
+      },function(){});
     }
   }
 
+  @Method()
+  async toggleThumbnailViewer() {
+    if (this.thumbnailShown) {
+      this.thumbnailViewer.hide();
+    }else{
+      this.thumbnailViewer.show();
+    }
+    this.thumbnailShown = !this.thumbnailShown;
+  }
+
   render() {
+    const sideBar = getAssetPath(`./assets/sidebar.svg`);
     return (
       <Host>
-        <div class="container" id={this.containerID} ref={(el) => this.container = el as HTMLDivElement}>
+        <div class="toolbar" ref={(el) => this.toolbar = el as HTMLDivElement}>
+          <img class="Icon" src={sideBar} onClick={()=>this.toggleThumbnailViewer()}/>
+        </div>
+        <div id={this.containerID} ref={(el) => this.container = el as HTMLDivElement}>
           <slot></slot>
         </div>
       </Host>

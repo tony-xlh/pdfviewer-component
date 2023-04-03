@@ -1,10 +1,10 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { PdfViewer } from '../pdf-viewer';
+import { PDFViewer } from '../pdf-viewer';
 
 describe('pdf-viewer', () => {
   it('renders', async () => {
     const page = await newSpecPage({
-      components: [PdfViewer],
+      components: [PDFViewer],
       html: `<pdf-viewer></pdf-viewer>`,
     });
     expect(page.root).toEqualHtml(`

@@ -10,6 +10,7 @@ export { WebTwain } from "dwt/dist/types/WebTwain";
 export namespace Components {
     interface PdfViewer {
         "height"?: string;
+        "toggleThumbnailViewer": () => Promise<void>;
         "url"?: string;
         "width"?: string;
     }
