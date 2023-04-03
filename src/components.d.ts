@@ -10,6 +10,7 @@ export { WebTwain } from "dwt/dist/types/WebTwain";
 export namespace Components {
     interface PdfViewer {
         "height"?: string;
+        "url"?: string;
         "width"?: string;
     }
 }
@@ -32,6 +33,7 @@ declare namespace LocalJSX {
     interface PdfViewer {
         "height"?: string;
         "onWebTWAINReady"?: (event: PdfViewerCustomEvent<WebTwain>) => void;
+        "url"?: string;
         "width"?: string;
     }
     interface IntrinsicElements {

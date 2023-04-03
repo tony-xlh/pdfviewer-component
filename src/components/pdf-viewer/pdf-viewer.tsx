@@ -10,8 +10,10 @@ import { WebTwain } from "dwt/dist/types/WebTwain";
 export class PDFViewer {
   containerID:string = "dwtcontrolContainer";
   container:HTMLDivElement;
+  DWObject:WebTwain;
   @Prop() width?: string;
   @Prop() height?: string;
+  @Prop() url?: string;
   @Event() webTWAINReady?: EventEmitter<WebTwain>;
   componentDidLoad(){
     console.log("load");
@@ -28,20 +30,21 @@ export class PDFViewer {
           WebTwainId: 'dwtcontrol'
         },
         function(obj) {
-          DWObject = obj;
-          DWObject.Viewer.bind(pThis.container);
-          DWObject.Viewer.show();
+          pThis.DWObject = obj;
+          pThis.DWObject.Viewer.bind(pThis.container);
+          pThis.DWObject.Viewer.show();
           if (pThis.width) {
             pThis.container.style.width = pThis.width;
-            DWObject.Viewer.width = pThis.width;
+            pThis.DWObject.Viewer.width = pThis.width;
           }
           if (pThis.height) {
             pThis.container.style.height = pThis.height;
-            DWObject.Viewer.height = pThis.height;
+            pThis.DWObject.Viewer.height = pThis.height;
           }
           if (pThis.webTWAINReady) {
-            pThis.webTWAINReady.emit(DWObject);
+            pThis.webTWAINReady.emit(pThis.DWObject);
           }
+          pThis.loadPDF();
         },
         function(err) {
           console.log(err);
@@ -52,6 +55,15 @@ export class PDFViewer {
         WebTwainId: 'dwtObject'
     }];
     Dynamsoft.DWT.Load();
+  }
+
+  async loadPDF(){
+    if (this.url) {
+      let response = await fetch(this.url);
+      let blob = await response.blob();
+      console.log(blob);
+      this.DWObject.LoadImageFromBinary(blob,function(){},function(){});
+    }
   }
 
   render() {
