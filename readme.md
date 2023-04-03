@@ -33,7 +33,7 @@ PDFViewer.addEventListener("webTWAINReady",webTWAINReady);
 
    ```html
    <script type="module">
-     import { defineCustomElements } from 'https://cdn.jsdelivr.net/npm/pdfviewer-component/dist/esm/loader.js';
+     import { defineCustomElements } from 'https://cdn.jsdelivr.net/npm/pdfviewer-web-component/dist/esm/loader.js';
      defineCustomElements();
    </script>
    ```
@@ -43,12 +43,12 @@ PDFViewer.addEventListener("webTWAINReady",webTWAINReady);
 - Then you can use the element anywhere in your template, JSX, html etc
 
 ### Node Modules
-- Run `npm install pdfviewer-component --save`
+- Run `npm install pdfviewer-web-component --save`
 - Put a script tag similar to this 
 
    ```html
    <script type="module">
-     import { defineCustomElements } from 'node_modules/pdfviewer-component/dist/esm/loader.js';
+     import { defineCustomElements } from 'node_modules/pdfviewer-web-component/dist/esm/loader.js';
      defineCustomElements();
    </script>
    ```
@@ -58,6 +58,6 @@ PDFViewer.addEventListener("webTWAINReady",webTWAINReady);
 - Then you can use the element anywhere in your template, JSX, html etc
 
 ### In a stencil-starter app
-- Run `npm install pdfviewer-component --save`
-- Add an import to the npm packages `import pdfviewer-component;`
+- Run `npm install pdfviewer-web-component --save`
+- Add an import to the npm packages `import pdfviewer-web-component;`
 - Then you can use the element anywhere in your template, JSX, html etc

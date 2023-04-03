@@ -1,5 +1,5 @@
 {
-  "name": "pdfviewer-component",
+  "name": "pdfviewer-web-component",
   "version": "0.0.1",
   "description": "PDF Viewer Web Component",
   "main": "dist/index.cjs.js",
