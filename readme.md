@@ -2,7 +2,7 @@
 
 ## PDF Viewer Web Component
 
-This component can view a PDF file online in the browser. [Dynamic Web TWAIN](https://www.dynamsoft.com/web-twain/overview/) is used as the backend.
+This component can view a PDF file online in the browser. [Dynamic Web TWAIN](https://www.dynamsoft.com/web-twain/overview/) is used as the backend. It can also scan documents and save them as a PDF file.
 
 ### Usage
 
