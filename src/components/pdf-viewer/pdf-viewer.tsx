@@ -28,6 +28,7 @@ export class PDFViewer {
   @Prop() height?: string;
   @Prop() url?: string;
   @Prop() license?: string;
+  @Prop() showThumbnailViewer?: boolean;
   @Event() webTWAINReady?: EventEmitter<WebTwain>;
   componentWillLoad(){
     this.status = "Loading...";
@@ -76,7 +77,12 @@ export class PDFViewer {
             }
           });
           pThis.thumbnailViewer = pThis.DWObject.Viewer.createThumbnailViewer();
-          pThis.thumbnailViewer.show();
+          if (pThis.showThumbnailViewer === true) {
+            pThis.thumbnailViewer.show();
+            pThis.thumbnailShown = true;
+          }else{
+            pThis.thumbnailShown = false;
+          }
           pThis.loadPDF();
         },
         function(err) {

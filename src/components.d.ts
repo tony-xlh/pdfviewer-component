@@ -11,6 +11,7 @@ export namespace Components {
     interface PdfViewer {
         "height"?: string;
         "license"?: string;
+        "showThumbnailViewer"?: boolean;
         "toggleThumbnailViewer": () => Promise<void>;
         "url"?: string;
         "width"?: string;
@@ -36,6 +37,7 @@ declare namespace LocalJSX {
         "height"?: string;
         "license"?: string;
         "onWebTWAINReady"?: (event: PdfViewerCustomEvent<WebTwain>) => void;
+        "showThumbnailViewer"?: boolean;
         "url"?: string;
         "width"?: string;
     }
