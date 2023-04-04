@@ -27,6 +27,7 @@ export class PDFViewer {
   @Prop() width?: string;
   @Prop() height?: string;
   @Prop() url?: string;
+  @Prop() license?: string;
   @Event() webTWAINReady?: EventEmitter<WebTwain>;
   componentWillLoad(){
     this.status = "Loading...";
@@ -85,6 +86,9 @@ export class PDFViewer {
     Dynamsoft.DWT.Containers = [{
         WebTwainId: 'dwtObject'
     }];
+    if (this.license) {
+      Dynamsoft.DWT.ProductKey = this.license;
+    }
     Dynamsoft.DWT.Load();
   }
 
