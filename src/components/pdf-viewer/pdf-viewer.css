@@ -2,6 +2,17 @@
   display: block;
 }
 
+.container {
+  position: relative;
+}
+
+.status {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 99;
+}
+
 .toolbar {
   height: 30px;
   border: 1px solid rgb(204, 204, 204);

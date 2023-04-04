@@ -17,12 +17,17 @@ export class PDFViewer {
   thumbnailViewer:ThumbnailViewer;
   thumbnailShown:boolean = true;
   DWObject:WebTwain;
+  @State() status: string = "";
   @State() percent: number = 100;
   @State() showFitWindow:boolean = true;
   @Prop() width?: string;
   @Prop() height?: string;
   @Prop() url?: string;
   @Event() webTWAINReady?: EventEmitter<WebTwain>;
+  componentWillLoad(){
+    this.status = "Loading...";
+  }
+  
   componentDidLoad() {
     console.log("load");
     this.initDWT();
@@ -37,6 +42,7 @@ export class PDFViewer {
           WebTwainId: 'dwtcontrol'
         },
         function(obj) {
+          pThis.status = "";
           pThis.DWObject = obj;
           pThis.DWObject.Viewer.bind(pThis.container);
           pThis.DWObject.Viewer.show();
@@ -69,13 +75,19 @@ export class PDFViewer {
 
   async loadPDF() {
     if (this.url) {
-      let response = await fetch(this.url);
-      let blob = await response.blob();
-      console.log(blob);
-      let pThis = this;
-      this.DWObject.LoadImageFromBinary(blob,function(){
-        pThis.DWObject.SelectImages([0]);
-      },function(){});
+      this.status = "Loading PDF...";
+      try {
+        let response = await fetch(this.url);
+        let blob = await response.blob();
+        let pThis = this;
+        this.DWObject.LoadImageFromBinary(blob,function(){
+          pThis.DWObject.SelectImages([0]);
+        },function(){});
+        this.status = "";
+      } catch (error) {
+        this.status = "Failed to load the PDF";
+        console.log(this.status);
+      }
     }
   }
 
@@ -107,6 +119,12 @@ export class PDFViewer {
     this.showFitWindow = !this.showFitWindow;
   }
 
+  renderStatus(){
+    if (this.status) {
+      return <div class="status">{this.status}</div>;
+    }
+  }
+
   render() {
     //const sideBar = getAssetPath(`./assets/sidebar.svg`);
     //const fitWindow = getAssetPath(`./assets/FitWindow.png`);
@@ -130,9 +148,10 @@ export class PDFViewer {
           }
           </div>
         </div>
-        <div id={this.containerID} ref={(el) => this.container = el as HTMLDivElement}>
-          <slot></slot>
+        <div id={this.containerID} class="container" ref={(el) => this.container = el as HTMLDivElement}>
+        {this.renderStatus()}
         </div>
+        <slot></slot>
       </Host>
     );
   }
