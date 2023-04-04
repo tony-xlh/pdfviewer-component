@@ -2,7 +2,7 @@ import { Component, h, Prop, Event, EventEmitter, Host, Method, State } from '@s
 import Dynamsoft from "dwt";
 import { WebTwain } from "dwt/dist/types/WebTwain";
 import { ThumbnailViewer } from 'dwt/dist/types/WebTwain.Viewer';
-import { fitWindow, origSize, sidebar } from './assets/base64';
+import { download, exitFullscreen, fitWindow, fullscreen, openFile, origSize, settings, sidebar } from './assets/base64';
 
 @Component({
   tag: 'pdf-viewer',
@@ -19,7 +19,11 @@ export class PDFViewer {
   DWObject:WebTwain;
   @State() status: string = "";
   @State() percent: number = 100;
-  @State() showFitWindow:boolean = true;
+  @State() showFitWindow: boolean = true;
+  @State() showActionOverlay: boolean = false;
+  @State() fullscreen: boolean = false;
+  @State() totalPageNumber: number = 0;
+  @State() selectedPageNumber: number = 0;
   @Prop() width?: string;
   @Prop() height?: string;
   @Prop() url?: string;
@@ -27,9 +31,15 @@ export class PDFViewer {
   componentWillLoad(){
     this.status = "Loading...";
   }
-  
+
   componentDidLoad() {
-    console.log("load");
+    document.addEventListener("fullscreenchange", () => {
+      if (document.fullscreenElement) {
+        this.fullscreen = true;
+      }else{
+        this.fullscreen = false;
+      }
+    });
     this.initDWT();
   }
 
@@ -58,6 +68,11 @@ export class PDFViewer {
             pThis.webTWAINReady.emit(pThis.DWObject);
           }
           pThis.DWObject.Viewer.cursor = "pointer";
+          pThis.DWObject.RegisterEvent('OnBufferChanged',function (bufferChangeInfo) {
+            if (bufferChangeInfo.action === "shift") {
+              pThis.selectedPageNumber = pThis.DWObject.CurrentImageIndexInBuffer + 1;
+            }
+          });
           pThis.thumbnailViewer = pThis.DWObject.Viewer.createThumbnailViewer();
           pThis.thumbnailViewer.show();
           pThis.loadPDF();
@@ -82,11 +97,12 @@ export class PDFViewer {
         let pThis = this;
         this.DWObject.LoadImageFromBinary(blob,function(){
           pThis.DWObject.SelectImages([0]);
+          pThis.updateSelectedPageNumber(1);
+          pThis.updateTotalPage();
         },function(){});
         this.status = "";
       } catch (error) {
         this.status = "Failed to load the PDF";
-        console.log(this.status);
       }
     }
   }
@@ -104,7 +120,6 @@ export class PDFViewer {
   updateZoom(e:any){
     this.percent = e.target.value;
     const zoom = this.percent/100;
-    console.log(zoom);
     this.DWObject.Viewer.zoom = zoom;
   }
 
@@ -121,7 +136,68 @@ export class PDFViewer {
 
   renderStatus(){
     if (this.status) {
-      return <div class="status">{this.status}</div>;
+      return (<div class="status">{this.status}</div>);
+    }
+  }
+
+  renderActionOverlay(){
+    let className:string;
+    if (this.showActionOverlay) {
+      className = "overlay";
+    }else{
+      className = "overlay hidden";
+    }
+    return (
+      <div class={className}>
+        {this.fullscreen
+          ? <img class="Icon" src={exitFullscreen} onClick={()=>this.toggleFullscreen()}/>
+          : <img class="Icon" src={fullscreen} onClick={()=>this.toggleFullscreen()}/>
+        }
+        <img class="Icon" src={openFile} onClick={()=>this.loadFile()}/>
+        <img class="Icon" src={download} onClick={()=>this.saveFile()}/>
+      </div>
+    );
+  }
+
+  async toggleFullscreen(){
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    }else{
+      let ele = this.container.parentNode["host"];
+      await ele.requestFullscreen();
+    }
+  }
+
+  loadFile(){
+    const success = () => {
+      this.updateTotalPage();
+    }
+    this.DWObject.LoadImageEx("",Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL,success);
+  }
+
+  saveFile(){
+    this.DWObject.SaveAllAsPDF("");
+  }
+
+  toggleActionOverlay(){
+    this.showActionOverlay = !this.showActionOverlay;
+  }
+
+  updateTotalPage(){
+    if (this.DWObject) {
+      this.totalPageNumber = this.DWObject.HowManyImagesInBuffer;
+    }
+  }
+
+  updateSelectedPageNumber(num:number){
+    if (num <= 0 || num > this.totalPageNumber) {
+      this.selectedPageNumber = this.DWObject.CurrentImageIndexInBuffer + 1;
+      return;
+    }
+    this.selectedPageNumber = num;
+    let index = this.selectedPageNumber - 1;
+    if (this.DWObject) {
+      this.DWObject.SelectImages([index]);
     }
   }
 
@@ -147,9 +223,20 @@ export class PDFViewer {
             : <img class="Icon" src={origSize} onClick={()=>this.quicksize()}/>
           }
           </div>
+          <div class="page toolbar-item">
+            <input type="number" id="page-input" 
+              value={this.selectedPageNumber}
+              onChange={(e) => this.updateSelectedPageNumber((e as any).target.value)}
+            />/{this.totalPageNumber}
+          </div>
+          <div class="toolbar-container toolbar-item"></div>
+          <div class="action toolbar-item">
+            <img class="Icon" src={settings} onClick={()=>this.toggleActionOverlay()}/>
+          </div>
         </div>
         <div id={this.containerID} class="container" ref={(el) => this.container = el as HTMLDivElement}>
-        {this.renderStatus()}
+          {this.renderStatus()}
+          {this.renderActionOverlay()}
         </div>
         <slot></slot>
       </Host>
