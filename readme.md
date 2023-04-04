@@ -4,6 +4,8 @@
 
 This component can view a PDF file online in the browser. [Dynamic Web TWAIN](https://www.dynamsoft.com/web-twain/overview/) is used as the backend. It can also scan documents and save them as a PDF file.
 
+[Online demo](https://tony-xlh.github.io/pdfviewer-component/test.html)
+
 ### Usage
 
 In your HTML, add the component:
