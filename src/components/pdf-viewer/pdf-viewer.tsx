@@ -2,7 +2,7 @@ import { Component, h, Prop, Event, EventEmitter, Host, Method, State } from '@s
 import Dynamsoft from "dwt";
 import { WebTwain } from "dwt/dist/types/WebTwain";
 import { ThumbnailViewer } from 'dwt/dist/types/WebTwain.Viewer';
-import { download, exitFullscreen, fitWindow, fullscreen, openFile, origSize, settings, sidebar } from './assets/base64';
+import { download, exitFullscreen, fitWindow, fullscreen, openFile, origSize, scanner, settings, sidebar } from './assets/base64';
 
 @Component({
   tag: 'pdf-viewer',
@@ -157,6 +157,7 @@ export class PDFViewer {
           ? <img class="Icon" src={exitFullscreen} onClick={()=>this.toggleFullscreen()}/>
           : <img class="Icon" src={fullscreen} onClick={()=>this.toggleFullscreen()}/>
         }
+        <img class="Icon" src={scanner} onClick={()=>this.scan()}/>
         <img class="Icon" src={openFile} onClick={()=>this.loadFile()}/>
         <img class="Icon" src={download} onClick={()=>this.saveFile()}/>
       </div>
@@ -177,6 +178,18 @@ export class PDFViewer {
       this.updateTotalPage();
     }
     this.DWObject.LoadImageEx("",Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL,success);
+  }
+
+  scan(){
+    let pThis = this;
+    pThis.DWObject.SelectSource(function () {
+      pThis.DWObject.OpenSource();
+      pThis.DWObject.AcquireImage();
+    },
+      function () {
+        console.log("SelectSource failed!");
+      }
+    );
   }
 
   saveFile(){
