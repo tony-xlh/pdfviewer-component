@@ -1,7 +1,8 @@
-import { Component, h, Prop, getAssetPath, Event, EventEmitter, Host, Method, State } from '@stencil/core';
+import { Component, h, Prop, Event, EventEmitter, Host, Method, State } from '@stencil/core';
 import Dynamsoft from "dwt";
 import { WebTwain } from "dwt/dist/types/WebTwain";
 import { ThumbnailViewer } from 'dwt/dist/types/WebTwain.Viewer';
+import { fitWindow, origSize, sidebar } from './assets/base64';
 
 @Component({
   tag: 'pdf-viewer',
@@ -107,14 +108,14 @@ export class PDFViewer {
   }
 
   render() {
-    const sideBar = getAssetPath(`./assets/sidebar.svg`);
-    const fitWindow = getAssetPath(`./assets/FitWindow.png`);
-    const originalSize = getAssetPath(`./assets/Orig_size.png`);
+    //const sideBar = getAssetPath(`./assets/sidebar.svg`);
+    //const fitWindow = getAssetPath(`./assets/FitWindow.png`);
+    //const originalSize = getAssetPath(`./assets/Orig_size.png`);
     return (
       <Host>
         <div class="toolbar" ref={(el) => this.toolbar = el as HTMLDivElement}>
           <div class="toolbar-item">
-            <img class="Icon" src={sideBar} onClick={()=>this.toggleThumbnailViewer()}/>
+            <img class="Icon" src={sidebar} onClick={()=>this.toggleThumbnailViewer()}/>
           </div>
           <div class="zoom toolbar-item">
             <input type="number" id="percent-input" 
@@ -125,7 +126,7 @@ export class PDFViewer {
           <div class="quicksize toolbar-item">
           {this.showFitWindow
             ? <img class="Icon" src={fitWindow} onClick={()=>this.quicksize()}/>
-            : <img class="Icon" src={originalSize} onClick={()=>this.quicksize()}/>
+            : <img class="Icon" src={origSize} onClick={()=>this.quicksize()}/>
           }
           </div>
         </div>
