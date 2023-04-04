@@ -68,6 +68,7 @@ export class PDFViewer {
           if (pThis.webTWAINReady) {
             pThis.webTWAINReady.emit(pThis.DWObject);
           }
+          pThis.DWObject.Viewer.setViewMode(1,1);
           pThis.DWObject.Viewer.cursor = "pointer";
           pThis.DWObject.RegisterEvent('OnBufferChanged',function (bufferChangeInfo) {
             if (bufferChangeInfo.action === "shift") {
@@ -100,6 +101,7 @@ export class PDFViewer {
         let blob = await response.blob();
         let pThis = this;
         this.DWObject.LoadImageFromBinary(blob,function(){
+          pThis.DWObject.Viewer.singlePageMode=true;
           pThis.DWObject.SelectImages([0]);
           pThis.updateSelectedPageNumber(1);
           pThis.updateTotalPage();
