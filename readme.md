@@ -19,6 +19,7 @@ You can define the props and events like this:
 ```js
 const PDFViewer = document.querySelector('pdf-viewer');
 PDFViewer.url = "https://127.0.0.1:8888/Get?filename=patch-code-samples-bw1.pdf";
+PDFViewer.showThumbnailViewer = true;
 PDFViewer.width = "100%";
 PDFViewer.height = "100%";
 PDFViewer.license = "<your license>"; //otherwise, use a one-day trial
