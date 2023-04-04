@@ -14,12 +14,23 @@ In your HTML, add the component:
 <pdf-viewer></pdf-viewer>
 ```
 
-You can define the props and events like this:
+You can define the props as attributes.
+
+```html
+<pdf-viewer 
+  width="100%" 
+  height="100%"
+  showthumbnailviewer="true"
+  url="./sample.pdf"
+></pdf-viewer>
+```
+
+You can also do it using JavaScript.
 
 ```js
 const PDFViewer = document.querySelector('pdf-viewer');
-PDFViewer.url = "https://127.0.0.1:8888/Get?filename=patch-code-samples-bw1.pdf";
-PDFViewer.showThumbnailViewer = true;
+PDFViewer.url = "./sample.pdf";
+PDFViewer.showthumbnailviewer = "true";
 PDFViewer.width = "100%";
 PDFViewer.height = "100%";
 PDFViewer.license = "<your license>"; //otherwise, use a one-day trial
