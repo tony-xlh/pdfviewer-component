@@ -7,11 +7,12 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type     | Default     |
-| -------- | --------- | ----------- | -------- | ----------- |
-| `height` | `height`  |             | `string` | `undefined` |
-| `url`    | `url`     |             | `string` | `undefined` |
-| `width`  | `width`   |             | `string` | `undefined` |
+| Property  | Attribute | Description | Type     | Default     |
+| --------- | --------- | ----------- | -------- | ----------- |
+| `height`  | `height`  |             | `string` | `undefined` |
+| `license` | `license` |             | `string` | `undefined` |
+| `url`     | `url`     |             | `string` | `undefined` |
+| `width`   | `width`   |             | `string` | `undefined` |
 
 
 ## Events
