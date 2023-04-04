@@ -154,12 +154,12 @@ export class PDFViewer {
     return (
       <div class={className}>
         {this.fullscreen
-          ? <img class="Icon" src={exitFullscreen} onClick={()=>this.toggleFullscreen()}/>
-          : <img class="Icon" src={fullscreen} onClick={()=>this.toggleFullscreen()}/>
+          ? <img title="Exit fullscreen" class="Icon" src={exitFullscreen} onClick={()=>this.toggleFullscreen()}/>
+          : <img title="Enter fullscreen" class="Icon" src={fullscreen} onClick={()=>this.toggleFullscreen()}/>
         }
-        <img class="Icon" src={scanner} onClick={()=>this.scan()}/>
-        <img class="Icon" src={openFile} onClick={()=>this.loadFile()}/>
-        <img class="Icon" src={download} onClick={()=>this.saveFile()}/>
+        <img title="Scan documents" class="Icon" src={scanner} onClick={()=>this.scan()}/>
+        <img title="Load local file" class="Icon" src={openFile} onClick={()=>this.loadFile()}/>
+        <img title="Save to PDF" class="Icon" src={download} onClick={()=>this.saveFile()}/>
       </div>
     );
   }
@@ -226,23 +226,25 @@ export class PDFViewer {
       <Host>
         <div class="toolbar" ref={(el) => this.toolbar = el as HTMLDivElement}>
           <div class="toolbar-item">
-            <img class="Icon" src={sidebar} onClick={()=>this.toggleThumbnailViewer()}/>
+            <img title="Toggle thumbnail viewer" class="Icon" src={sidebar} onClick={()=>this.toggleThumbnailViewer()}/>
           </div>
           <div class="zoom toolbar-item">
             <input type="number" id="percent-input" 
               value={this.percent}
+              title="Percent"
               onChange={(e) => this.updateZoom(e)}
             /><label htmlFor="percent-input">%</label>
           </div>
           <div class="quicksize toolbar-item">
           {this.showFitWindow
-            ? <img class="Icon" src={fitWindow} onClick={()=>this.quicksize()}/>
-            : <img class="Icon" src={origSize} onClick={()=>this.quicksize()}/>
+            ? <img title="Fit window" class="Icon" src={fitWindow} onClick={()=>this.quicksize()}/>
+            : <img title="Original size" class="Icon" src={origSize} onClick={()=>this.quicksize()}/>
           }
           </div>
           <div class="page toolbar-item">
             <input type="number" id="page-input" 
               value={this.selectedPageNumber}
+              title="Page number"
               onChange={(e) => this.updateSelectedPageNumber((e as any).target.value)}
             />/{this.totalPageNumber}
           </div>
