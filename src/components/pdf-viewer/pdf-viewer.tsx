@@ -184,14 +184,18 @@ export class PDFViewer {
 
   scan(){
     let pThis = this;
-    pThis.DWObject.SelectSource(function () {
-      pThis.DWObject.OpenSource();
-      pThis.DWObject.AcquireImage();
-    },
-      function () {
-        console.log("SelectSource failed!");
-      }
-    );
+    if (Dynamsoft.Lib.env.bMobile) {
+      pThis.DWObject.Addon.Camera.scanDocument();
+    }else{
+      pThis.DWObject.SelectSource(function () {
+        pThis.DWObject.OpenSource();
+        pThis.DWObject.AcquireImage();
+      },
+        function () {
+          console.log("SelectSource failed!");
+        }
+      );
+    }
   }
 
   saveFile(){
