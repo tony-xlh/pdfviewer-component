@@ -18,8 +18,6 @@ You can define the props as attributes.
 
 ```html
 <pdf-viewer 
-  width="100%" 
-  height="100%"
   showthumbnailviewer="true"
   url="./sample.pdf"
 ></pdf-viewer>
@@ -31,8 +29,6 @@ You can also do it using JavaScript.
 const PDFViewer = document.querySelector('pdf-viewer');
 PDFViewer.url = "./sample.pdf";
 PDFViewer.showthumbnailviewer = "true";
-PDFViewer.width = "100%";
-PDFViewer.height = "100%";
 PDFViewer.license = "<your license>"; //otherwise, use a one-day trial
 const webTWAINReady = async (e) => {
   DWObject = e.detail;
