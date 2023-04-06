@@ -9,12 +9,10 @@ import { WebTwain } from "dwt/dist/types/WebTwain";
 export { WebTwain } from "dwt/dist/types/WebTwain";
 export namespace Components {
     interface PdfViewer {
-        "height"?: string;
         "license"?: string;
         "showthumbnailviewer"?: string;
         "toggleThumbnailViewer": () => Promise<void>;
         "url"?: string;
-        "width"?: string;
     }
 }
 export interface PdfViewerCustomEvent<T> extends CustomEvent<T> {
@@ -34,12 +32,10 @@ declare global {
 }
 declare namespace LocalJSX {
     interface PdfViewer {
-        "height"?: string;
         "license"?: string;
         "onWebTWAINReady"?: (event: PdfViewerCustomEvent<WebTwain>) => void;
         "showthumbnailviewer"?: string;
         "url"?: string;
-        "width"?: string;
     }
     interface IntrinsicElements {
         "pdf-viewer": PdfViewer;

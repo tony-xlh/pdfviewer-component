@@ -24,8 +24,6 @@ export class PDFViewer {
   @State() fullscreen: boolean = false;
   @State() totalPageNumber: number = 0;
   @State() selectedPageNumber: number = 0;
-  @Prop() width?: string;
-  @Prop() height?: string;
   @Prop() url?: string;
   @Prop() license?: string;
   @Prop() showthumbnailviewer?: string;
@@ -58,14 +56,8 @@ export class PDFViewer {
           pThis.DWObject = obj;
           pThis.DWObject.Viewer.bind(pThis.container);
           pThis.DWObject.Viewer.show();
-          if (pThis.width) {
-            pThis.container.style.width = pThis.width;
-            pThis.DWObject.Viewer.width = pThis.width;
-          }
-          if (pThis.height) {
-            pThis.container.style.height = pThis.height;
-            pThis.DWObject.Viewer.height = pThis.height;
-          }
+          pThis.DWObject.Viewer.width = "100%";
+          pThis.DWObject.Viewer.height = "100%";
           if (pThis.webTWAINReady) {
             pThis.webTWAINReady.emit(pThis.DWObject);
           }
@@ -236,38 +228,42 @@ export class PDFViewer {
     //const originalSize = getAssetPath(`./assets/Orig_size.png`);
     return (
       <Host>
-        <div class="toolbar" ref={(el) => this.toolbar = el as HTMLDivElement}>
-          <div class="toolbar-item">
-            <img title="Toggle thumbnail viewer" class="Icon" src={sidebar} onClick={()=>this.toggleThumbnailViewer()}/>
+        <div class="container">
+          <div class="toolbar" ref={(el) => this.toolbar = el as HTMLDivElement}>
+            <div class="toolbar-item">
+              <img title="Toggle thumbnail viewer" class="Icon" src={sidebar} onClick={()=>this.toggleThumbnailViewer()}/>
+            </div>
+            <div class="zoom toolbar-item">
+              <input type="number" id="percent-input" 
+                value={this.percent}
+                title="Percent"
+                onChange={(e) => this.updateZoom(e)}
+              /><label htmlFor="percent-input">%</label>
+            </div>
+            <div class="quicksize toolbar-item">
+            {this.showFitWindow
+              ? <img title="Fit window" class="Icon" src={fitWindow} onClick={()=>this.quicksize()}/>
+              : <img title="Original size" class="Icon" src={origSize} onClick={()=>this.quicksize()}/>
+            }
+            </div>
+            <div class="page toolbar-item">
+              <input type="number" id="page-input" 
+                value={this.selectedPageNumber}
+                title="Page number"
+                onChange={(e) => this.updateSelectedPageNumber((e as any).target.value)}
+              />/{this.totalPageNumber}
+            </div>
+            <div class="toolbar-container toolbar-item"></div>
+            <div class="action toolbar-item">
+              <img class="Icon" src={settings} onClick={()=>this.toggleActionOverlay()}/>
+            </div>
           </div>
-          <div class="zoom toolbar-item">
-            <input type="number" id="percent-input" 
-              value={this.percent}
-              title="Percent"
-              onChange={(e) => this.updateZoom(e)}
-            /><label htmlFor="percent-input">%</label>
+          <div class="viewer-container">
+            <div id={this.containerID} class="dwt-container" ref={(el) => this.container = el as HTMLDivElement}>
+              {this.renderStatus()}
+              {this.renderActionOverlay()}
+            </div>
           </div>
-          <div class="quicksize toolbar-item">
-          {this.showFitWindow
-            ? <img title="Fit window" class="Icon" src={fitWindow} onClick={()=>this.quicksize()}/>
-            : <img title="Original size" class="Icon" src={origSize} onClick={()=>this.quicksize()}/>
-          }
-          </div>
-          <div class="page toolbar-item">
-            <input type="number" id="page-input" 
-              value={this.selectedPageNumber}
-              title="Page number"
-              onChange={(e) => this.updateSelectedPageNumber((e as any).target.value)}
-            />/{this.totalPageNumber}
-          </div>
-          <div class="toolbar-container toolbar-item"></div>
-          <div class="action toolbar-item">
-            <img class="Icon" src={settings} onClick={()=>this.toggleActionOverlay()}/>
-          </div>
-        </div>
-        <div id={this.containerID} class="container" ref={(el) => this.container = el as HTMLDivElement}>
-          {this.renderStatus()}
-          {this.renderActionOverlay()}
         </div>
         <slot></slot>
       </Host>
