@@ -13,6 +13,7 @@ import { download, exitFullscreen, fitWindow, fullscreen, openFile, origSize, sc
 export class PDFViewer {
   containerID:string = "dwtcontrolContainer";
   container:HTMLDivElement;
+  parentContainer:HTMLDivElement;
   toolbar:HTMLDivElement;
   thumbnailViewer:ThumbnailViewer;
   thumbnailShown:boolean = true;
@@ -168,7 +169,7 @@ export class PDFViewer {
     if (document.fullscreenElement) {
       document.exitFullscreen();
     }else{
-      let ele = this.container.parentNode["host"];
+      let ele = this.parentContainer.parentNode["host"];
       await ele.requestFullscreen();
     }
   }
@@ -228,7 +229,7 @@ export class PDFViewer {
     //const originalSize = getAssetPath(`./assets/Orig_size.png`);
     return (
       <Host>
-        <div class="container">
+        <div class="container" ref={(el) => this.parentContainer = el as HTMLDivElement}>
           <div class="toolbar" ref={(el) => this.toolbar = el as HTMLDivElement}>
             <div class="toolbar-item">
               <img title="Toggle thumbnail viewer" class="Icon" src={sidebar} onClick={()=>this.toggleThumbnailViewer()}/>

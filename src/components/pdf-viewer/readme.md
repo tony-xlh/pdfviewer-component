@@ -9,11 +9,9 @@
 
 | Property              | Attribute             | Description | Type     | Default     |
 | --------------------- | --------------------- | ----------- | -------- | ----------- |
-| `height`              | `height`              |             | `string` | `undefined` |
 | `license`             | `license`             |             | `string` | `undefined` |
 | `showthumbnailviewer` | `showthumbnailviewer` |             | `string` | `undefined` |
 | `url`                 | `url`                 |             | `string` | `undefined` |
-| `width`               | `width`               |             | `string` | `undefined` |
 
 
 ## Events
