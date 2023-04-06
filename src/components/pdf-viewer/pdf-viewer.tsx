@@ -188,7 +188,10 @@ export class PDFViewer {
     }else{
       pThis.DWObject.SelectSource(function () {
         pThis.DWObject.OpenSource();
-        pThis.DWObject.AcquireImage();
+        const success = () => {
+          pThis.updateTotalPage();
+        }
+        pThis.DWObject.AcquireImage({},success);
       },
         function () {
           console.log("SelectSource failed!");
