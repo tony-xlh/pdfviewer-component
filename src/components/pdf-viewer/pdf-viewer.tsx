@@ -189,6 +189,7 @@ export class PDFViewer {
       pThis.DWObject.SelectSource(function () {
         pThis.DWObject.OpenSource();
         const success = () => {
+          pThis.updateSelectedPageNumber(pThis.DWObject.HowManyImagesInBuffer);
           pThis.updateTotalPage();
         }
         pThis.DWObject.AcquireImage({},success);
