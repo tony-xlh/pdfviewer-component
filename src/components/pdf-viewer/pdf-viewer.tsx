@@ -177,6 +177,7 @@ export class PDFViewer {
   loadFile(){
     const success = () => {
       this.updateTotalPage();
+      this.updateSelectedPageNumber(this.DWObject.HowManyImagesInBuffer);
     }
     this.DWObject.LoadImageEx("",Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL,success);
   }
