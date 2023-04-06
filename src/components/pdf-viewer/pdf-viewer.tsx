@@ -12,7 +12,7 @@ import { download, exitFullscreen, fitWindow, fullscreen, openFile, origSize, sc
 })
 export class PDFViewer {
   containerID:string = "dwtcontrolContainer";
-  container:HTMLDivElement;
+  dwtContainer:HTMLDivElement;
   parentContainer:HTMLDivElement;
   toolbar:HTMLDivElement;
   thumbnailViewer:ThumbnailViewer;
@@ -55,7 +55,7 @@ export class PDFViewer {
         function(obj) {
           pThis.status = "";
           pThis.DWObject = obj;
-          pThis.DWObject.Viewer.bind(pThis.container);
+          pThis.DWObject.Viewer.bind(pThis.dwtContainer);
           pThis.DWObject.Viewer.show();
           pThis.DWObject.Viewer.width = "100%";
           pThis.DWObject.Viewer.height = "100%";
@@ -265,7 +265,7 @@ export class PDFViewer {
             </div>
           </div>
           <div class="viewer-container">
-            <div id={this.containerID} class="dwt-container" ref={(el) => this.container = el as HTMLDivElement}>
+            <div id={this.containerID} class="dwt-container" ref={(el) => this.dwtContainer = el as HTMLDivElement}>
               {this.renderStatus()}
               {this.renderActionOverlay()}
             </div>
