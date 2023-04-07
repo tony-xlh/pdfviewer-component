@@ -28,6 +28,7 @@ export class PDFViewer {
   @Prop() url?: string;
   @Prop() license?: string;
   @Prop() showthumbnailviewer?: string;
+  @Prop() uselocalservice?: string;
   @Event() webTWAINReady?: EventEmitter<WebTwain>;
   componentWillLoad(){
     this.status = "Loading...";
@@ -46,6 +47,11 @@ export class PDFViewer {
 
   initDWT() {
     Dynamsoft.DWT.ResourcesPath = "https://unpkg.com/dwt@18.0.0/dist";
+    if (this.uselocalservice === "true") {
+      Dynamsoft.DWT.UseLocalService = true;
+    } else {
+      Dynamsoft.DWT.UseLocalService = false;
+    }
     let pThis = this;
     Dynamsoft.DWT.RegisterEvent('OnWebTwainReady', () => {
       Dynamsoft.DWT.CreateDWTObjectEx(
@@ -191,7 +197,7 @@ export class PDFViewer {
 
   scan(){
     let pThis = this;
-    if (Dynamsoft.Lib.env.bMobile) {
+    if (Dynamsoft.Lib.env.bMobile || this.uselocalservice != "true") {
       pThis.DWObject.Addon.Camera.scanDocument();
     }else{
       pThis.DWObject.SelectSource(function () {

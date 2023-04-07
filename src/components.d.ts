@@ -13,6 +13,7 @@ export namespace Components {
         "showthumbnailviewer"?: string;
         "toggleThumbnailViewer": () => Promise<void>;
         "url"?: string;
+        "uselocalservice"?: string;
     }
 }
 export interface PdfViewerCustomEvent<T> extends CustomEvent<T> {
@@ -36,6 +37,7 @@ declare namespace LocalJSX {
         "onWebTWAINReady"?: (event: PdfViewerCustomEvent<WebTwain>) => void;
         "showthumbnailviewer"?: string;
         "url"?: string;
+        "uselocalservice"?: string;
     }
     interface IntrinsicElements {
         "pdf-viewer": PdfViewer;
