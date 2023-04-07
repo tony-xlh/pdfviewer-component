@@ -12,6 +12,7 @@
 | `license`             | `license`             |             | `string` | `undefined` |
 | `showthumbnailviewer` | `showthumbnailviewer` |             | `string` | `undefined` |
 | `url`                 | `url`                 |             | `string` | `undefined` |
+| `uselocalservice`     | `uselocalservice`     |             | `string` | `undefined` |
 
 
 ## Events
