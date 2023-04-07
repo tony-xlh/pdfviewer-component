@@ -2,7 +2,7 @@ import { Component, h, Prop, Event, EventEmitter, Host, Method, State } from '@s
 import Dynamsoft from "dwt";
 import { WebTwain } from "dwt/dist/types/WebTwain";
 import { ThumbnailViewer } from 'dwt/dist/types/WebTwain.Viewer';
-import { download, exitFullscreen, fitWindow, fullscreen, openFile, origSize, scanner, settings, sidebar } from './assets/base64';
+import { download, edit, exitFullscreen, fitWindow, fullscreen, openFile, origSize, scanner, settings, sidebar } from './assets/base64';
 
 @Component({
   tag: 'pdf-viewer',
@@ -160,6 +160,7 @@ export class PDFViewer {
           ? <img title="Exit fullscreen" class="Icon" src={exitFullscreen} onClick={()=>this.toggleFullscreen()}/>
           : <img title="Enter fullscreen" class="Icon" src={fullscreen} onClick={()=>this.toggleFullscreen()}/>
         }
+        <img title="Edit" class="Icon" src={edit} onClick={()=>this.edit()}/>
         <img title="Scan documents" class="Icon" src={scanner} onClick={()=>this.scan()}/>
         <img title="Load local file" class="Icon" src={openFile} onClick={()=>this.loadFile()}/>
         <img title="Save to PDF" class="Icon" src={download} onClick={()=>this.saveFile()}/>
@@ -181,6 +182,11 @@ export class PDFViewer {
       this.updateSelectedPageNumber(this.DWObject.HowManyImagesInBuffer);
     }
     this.DWObject.LoadImageEx("",Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL,success);
+  }
+
+  edit(){
+    const imageEditor = this.DWObject.Viewer.createImageEditor();
+    imageEditor.show();
   }
 
   scan(){
