@@ -68,6 +68,9 @@ export class PDFViewer {
             if (bufferChangeInfo.action === "shift") {
               pThis.selectedPageNumber = pThis.DWObject.CurrentImageIndexInBuffer + 1;
             }
+            if (bufferChangeInfo.action === "add") {
+              pThis.updateTotalPage();
+            }
           });
           pThis.thumbnailViewer = pThis.DWObject.Viewer.createThumbnailViewer();
           if (pThis.showthumbnailviewer === "true") {
@@ -103,7 +106,6 @@ export class PDFViewer {
           pThis.DWObject.Viewer.singlePageMode=true;
           pThis.DWObject.SelectImages([0]);
           pThis.updateSelectedPageNumber(1);
-          pThis.updateTotalPage();
         },function(){});
         this.status = "";
       } catch (error) {
@@ -176,7 +178,6 @@ export class PDFViewer {
 
   loadFile(){
     const success = () => {
-      this.updateTotalPage();
       this.updateSelectedPageNumber(this.DWObject.HowManyImagesInBuffer);
     }
     this.DWObject.LoadImageEx("",Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL,success);
@@ -191,7 +192,6 @@ export class PDFViewer {
         pThis.DWObject.OpenSource();
         const success = () => {
           pThis.updateSelectedPageNumber(pThis.DWObject.HowManyImagesInBuffer);
-          pThis.updateTotalPage();
         }
         pThis.DWObject.AcquireImage({},success);
       },
