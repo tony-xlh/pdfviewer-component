@@ -203,7 +203,7 @@ export class PDFViewer {
   }
 
   saveFile(){
-    this.DWObject.SaveAllAsPDF("");
+    this.DWObject.SaveAllAsPDF("scanned.pdf");
   }
 
   toggleActionOverlay(){
