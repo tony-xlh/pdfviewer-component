@@ -172,12 +172,29 @@ export class PDFViewer {
   }
 
   async toggleFullscreen(){
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
+    let isSafari = Dynamsoft.Lib.env.bSafari;
+    if (isSafari) {
+      if (this.parentContainer.classList.contains("fullscreen")) {
+        this.parentContainer.classList.remove("fullscreen");
+        this.fullscreen = false;
+        this.resizeViewer();
+      }else{
+        this.parentContainer.classList.add("fullscreen");
+        this.fullscreen = true;
+        this.resizeViewer();
+      }
     }else{
-      let ele = this.parentContainer.parentNode["host"];
-      await ele.requestFullscreen();
-    }
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }else{
+        let ele = this.parentContainer.parentNode["host"];
+        await ele.requestFullscreen();
+      }
+    }    
+  }
+
+  resizeViewer(){
+    this.DWObject.Viewer.singlePageMode = true;
   }
 
   loadFile(){
