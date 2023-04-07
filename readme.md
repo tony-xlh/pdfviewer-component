@@ -29,6 +29,7 @@ You can also do it using JavaScript.
 const PDFViewer = document.querySelector('pdf-viewer');
 PDFViewer.url = "./sample.pdf";
 PDFViewer.showthumbnailviewer = "true";
+PDFViewer.uselocalservice = "true"; //use local service to enable document scanning with scanners.
 PDFViewer.license = "<your license>"; //otherwise, use a one-day trial
 const webTWAINReady = async (e) => {
   DWObject = e.detail;
